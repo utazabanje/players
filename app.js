@@ -55,20 +55,28 @@ function initializePlayers() {
 
 initializePlayers();
 
-function renderPlayerRow(playerObject) {
-    return '<tr>' +
+function renderPlayerRow(playerObject, index) {
+    return '<tr class="playerRow" data-index="'+ index +'">' +
                 '<td>' + playerObject.firstName+ '</td>' +
                 '<td>' + playerObject.lastName + '</td>' +
                 '<td>' + playerObject.position+ '</td>' +
                 '<td>' + playerObject.number+ '</td>' +
                 '<td>' + playerObject.starting + '</td>' +
+                '<td>' +
+                    '<button class="btn btn-xs btn-danger player-delete">' +
+                        '<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>' +
+                    '</button>' +
+                    ' <button class="btn btn-xs btn-warning player-star">' +
+                        '<span class="glyphicon glyphicon-star" aria-hidden="true"></span>' +
+                    '</button>' +
+                '</td>' +
             '</tr>';
 }
 
 function generateTableHtml() {
     var playersHtml = '';
-    availablePlayers.forEach(function (player) {
-        playersHtml += renderPlayerRow(player);
+    availablePlayers.forEach(function (player, index) {
+        playersHtml += renderPlayerRow(player, index);
     });
     return playersHtml;
 }
@@ -90,6 +98,23 @@ addPlayerForm.submit(function (event) {
 
     addPlayer(firstName, lastName, position, number);
     event.preventDefault();
+});
+
+function deletePlayer(index) {
+    availablePlayers.splice(index, 1);
+    renderTable();
+}
+
+/*
+* tbody#playersTable se NIKAD ne brise iz DOMa
+* zato moramo na njemu da definisemo event handler
+* a ne na samom .player-delete jer se oni unistavaju i
+* ne vezu se lepo handleri kada se ponovo kreiraju u domu
+* */
+$('#playersTable').on('click', '.player-delete', function () {
+    var row = $(this).closest('tr');
+    var index = row.data('index');
+    deletePlayer(index);
 });
 
 function resetForm() {
