@@ -56,7 +56,11 @@ function initializePlayers() {
 initializePlayers();
 
 function renderPlayerRow(playerObject, index) {
-    return '<tr class="playerRow" data-index="'+ index +'">' +
+    var playingClass = '';
+    if (playerObject.starting) {
+        playingClass = 'success'
+    }
+    return '<tr class="playerRow '+ playingClass +'" data-index="'+ index +'">' +
                 '<td>' + playerObject.firstName+ '</td>' +
                 '<td>' + playerObject.lastName + '</td>' +
                 '<td>' + playerObject.position+ '</td>' +
@@ -105,6 +109,12 @@ function deletePlayer(index) {
     renderTable();
 }
 
+function togglPlayer(index) {
+    var player = availablePlayers[index];
+    player.starting = !player.starting;
+    renderTable();
+}
+
 /*
 * tbody#playersTable se NIKAD ne brise iz DOMa
 * zato moramo na njemu da definisemo event handler
@@ -115,6 +125,12 @@ $('#playersTable').on('click', '.player-delete', function () {
     var row = $(this).closest('tr');
     var index = row.data('index');
     deletePlayer(index);
+});
+
+$('#playersTable').on('click', '.player-star', function () {
+    var row = $(this).closest('tr');
+    var index = row.data('index');
+    togglPlayer(index);
 });
 
 function resetForm() {
