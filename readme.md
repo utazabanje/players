@@ -1,9 +1,9 @@
-# About
+# players
 
-This is a sample project for managing basketball players.
+## About
 
-## Project Setup
+This is open source project to manage NBA players...
 
-Clone the repo and run `npm install`.  
-Then you need to run `node node_modules/serve/bin/serve.js`, but I suggest to install serve globaly.  
-  
+## Project setup
+
+The usual: run `npm install` and then `npm install -g serve` and just run `serve` from project root!
